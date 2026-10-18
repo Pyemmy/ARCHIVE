@@ -269,60 +269,7 @@ img.sacred {
   animation: flyToHeader 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom Cursor Rules */
-.custom-cursor-dot {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 14px;
-  height: 14px;
-  background-color: #E8F044;
-  border-radius: 0 !important;
-  pointer-events: none;
-  z-index: 9999;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  will-change: transform;
-}
 
-.custom-cursor-ring {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 56px;
-  height: 56px;
-  border: 1.5px solid #E8F044;
-  pointer-events: none;
-  z-index: 9998;
-  mix-blend-mode: difference;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: #E8F044;
-  letter-spacing: 0.12em;
-  transition: width 0.22s var(--ease-settle), height 0.22s var(--ease-settle), background-color 0.22s ease;
-  will-change: transform, width, height;
-}
-
-.custom-cursor-ring.cursor-open {
-  width: 88px;
-  height: 88px;
-  background-color: rgba(232, 240, 68, 0.15);
-  border-width: 2px;
-}
-
-.custom-cursor-ring.cursor-drag {
-  width: 88px;
-  height: 88px;
-  background-color: rgba(228, 61, 39, 0.2);
-  border-color: #E43D27;
-  color: #E43D27;
-  border-width: 2px;
-}
 
 /* Reduced motion bypasses */
 [data-reduced-motion="true"] .mask-rise-item,
@@ -357,11 +304,4 @@ img.sacred {
   }
 }
 
-[data-reduced-motion="true"] .custom-cursor-dot,
-[data-reduced-motion="true"] .custom-cursor-ring,
-@media (prefers-reduced-motion: reduce) {
-  .custom-cursor-dot,
-  .custom-cursor-ring {
-    display: none !important;
-  }
-}
+

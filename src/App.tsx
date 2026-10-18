@@ -11,7 +11,6 @@ import { Inheritance } from './components/Inheritance';
 import { Colophon } from './components/Colophon';
 import { ArtifactDetail } from './components/ArtifactDetail';
 import { IntroCurtain } from './components/IntroCurtain';
-import { CustomCursor } from './components/CustomCursor';
 import { VelocityMarquee } from './components/VelocityMarquee';
 import { MiniPlayer } from './components/MiniPlayer';
 import { ArchiveTray } from './components/ArchiveTray';
@@ -86,9 +85,6 @@ function MainAppContent() {
       {!isIntroDone && (
         <IntroCurtain onComplete={() => setIsIntroDone(true)} />
       )}
-
-      {/* 2. Custom Cursor for Fine Pointer Devices */}
-      <CustomCursor />
 
       {/* Skip to Content accessible link */}
       <a

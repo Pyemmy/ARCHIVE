@@ -207,7 +207,7 @@ export const FourDisciplines: React.FC<FourDisciplinesProps> = ({ onOpenArtifact
         </div>
 
         {/* Living Dossier Set: 3 Historical Photos fully visible at rest */}
-        <div className="relative z-20 my-8 max-w-6xl w-full">
+        <div className="relative z-20 my-8 w-full">
           <ArtifactCardSet
             heading="DOSSIER // 01 PHOTOGRAPHY — HISTORICAL GLASS NEGATIVES"
             descriptor="EARLY PORTRAITURE REGISTER"

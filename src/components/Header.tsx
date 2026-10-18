@@ -4,7 +4,7 @@ import { MagneticButton } from './MagneticButton';
 import { useAudio } from '../context/AudioContext';
 import { useCollection } from '../context/CollectionContext';
 import { isReducedMotion } from '../utils/motion';
-import { Bookmark } from 'lucide-react';
+import { Bookmark, Play, Volume2, Pause } from 'lucide-react';
 
 interface HeaderProps {
   activeGround: 'ink' | 'cream' | 'paper-2' | 'vermilion' | 'yellow';
@@ -15,7 +15,7 @@ export const Header: React.FC<HeaderProps> = ({ activeGround, onNavigate }) => {
   const [scrollProgress, setScrollProgress] = useState<number>(0);
   const [isIndexOpen, setIsIndexOpen] = useState<boolean>(false);
   const [lagosTime, setLagosTime] = useState<string>('LAGOS 15:42 WAT · 31°C HUMID');
-  const { isPlaying, waveformLevels, currentTrack } = useAudio();
+  const { isPlaying, togglePlay, waveformLevels, currentTrack } = useAudio();
   const { keptIds, totalArchivalCount, openTray, flyingThumb } = useCollection();
 
   const keptButtonRef = useRef<HTMLButtonElement>(null);
@@ -90,7 +90,6 @@ export const Header: React.FC<HeaderProps> = ({ activeGround, onNavigate }) => {
     ? waveformLevels
         .map((lvl, idx) => {
           const x = (idx / (waveformLevels.length - 1)) * 100;
-          // Invert y: peak goes up from base line 8px
           const y = 8 - lvl * 7;
           return `${x.toFixed(1)},${y.toFixed(1)}`;
         })
@@ -101,7 +100,7 @@ export const Header: React.FC<HeaderProps> = ({ activeGround, onNavigate }) => {
     <>
       <header
         role="banner"
-        className={`fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-4 md:px-12 transition-all duration-300 pointer-events-none select-none ${groundBg}`}
+        className={`fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-3 py-2.5 sm:px-6 sm:py-3.5 md:px-12 md:py-4 transition-all duration-300 pointer-events-none select-none ${groundBg}`}
       >
         {/* Top Progress Line / Live Waveform */}
         {isPlaying && waveformSvgPoints && !isReducedMotion() ? (
@@ -132,56 +131,73 @@ export const Header: React.FC<HeaderProps> = ({ activeGround, onNavigate }) => {
           />
         )}
 
-        {/* Wordmark and Audio Status */}
-        <div className="pointer-events-auto flex items-center gap-4">
+        {/* 1. Wordmark: Pinned strictly to the LEFT */}
+        <div className="pointer-events-auto shrink-0 flex items-center gap-3">
           <a
             href="#signal"
             onClick={(e) => {
               e.preventDefault();
               onNavigate('signal');
             }}
-            className={`font-display-condensed text-2xl md:text-3xl tracking-tight transition-colors duration-300 ${textColor}`}
+            className={`font-display-condensed text-xl sm:text-2xl md:text-3xl tracking-tight transition-colors duration-300 ${textColor}`}
             aria-label="ARCHIVE, return to top"
           >
             ARCHIVE
           </a>
-
-          {isPlaying && (
-            <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 border border-[#E43D27] bg-[#E43D27]/10 text-[#E43D27] font-mono text-[10px] uppercase font-bold tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#E43D27] animate-pulse" />
-              <span>Playing: {currentTrack?.title}</span>
-            </div>
-          )}
         </div>
 
-        {/* Center: Live Lagos Clock & Reading Temp */}
-        <div className={`hidden md:block font-mono text-[11px] tracking-widest uppercase transition-colors duration-300 ${secondaryColor}`}>
-          {lagosTime}
+        {/* 2. Middle Spacer: guarantees ample empty space on mobile, displays Lagos clock on desktop */}
+        <div className="flex-1 flex justify-center items-center pointer-events-none px-2 min-w-[12px] sm:min-w-[24px]">
+          <div className={`hidden md:block font-mono text-[11px] tracking-widest uppercase transition-colors duration-300 ${secondaryColor}`}>
+            {lagosTime}
+          </div>
         </div>
 
-        {/* Right Action Group: Kept Counter + Index Button */}
-        <div className="pointer-events-auto flex items-center gap-3">
-          {/* Kept Counter 44px button */}
+        {/* 3. Action Group: Pinned strictly to the RIGHT */}
+        <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          {/* Direct Sound/Play Button anywhere outside */}
+          <button
+            type="button"
+            onClick={togglePlay}
+            aria-label={isPlaying ? 'Pause soundtrack' : 'Play soundtrack'}
+            className={`min-h-[38px] sm:min-h-[44px] px-2 sm:px-3 py-1 sm:py-2 font-mono uppercase text-[10px] sm:text-xs tracking-wider border flex items-center gap-1 transition-all duration-200 cursor-pointer ${
+              isPlaying
+                ? 'bg-[#E43D27] text-[#F0E8D8] border-[#E43D27] font-bold shadow-xs'
+                : buttonBorder
+            }`}
+          >
+            {isPlaying ? (
+              <Pause size={12} fill="currentColor" />
+            ) : (
+              <Play size={12} fill="currentColor" />
+            )}
+            <span className="hidden xs:inline sm:inline">
+              {isPlaying ? 'Pause' : 'Music'}
+            </span>
+          </button>
+
+          {/* Kept Counter */}
           <button
             ref={keptButtonRef}
             type="button"
             onClick={openTray}
-            className={`min-h-[44px] px-3 py-2 font-mono uppercase text-xs tracking-wider border flex items-center gap-1.5 transition-all duration-200 cursor-pointer ${
+            className={`min-h-[38px] sm:min-h-[44px] px-2 sm:px-3 py-1 sm:py-2 font-mono uppercase text-[10px] sm:text-xs tracking-wider border flex items-center gap-1 transition-all duration-200 cursor-pointer ${
               keptIds.length > 0
                 ? 'bg-[#E8F044] text-[#11110F] border-[#11110F] font-bold shadow-xs'
                 : buttonBorder
             }`}
             aria-label={`Open your archive tray, ${keptIds.length} of ${totalArchivalCount} kept`}
           >
-            <Bookmark size={14} fill={keptIds.length > 0 ? '#11110F' : 'none'} />
-            <span>Kept {keptIds.length}/{totalArchivalCount}</span>
+            <Bookmark size={12} fill={keptIds.length > 0 ? '#11110F' : 'none'} />
+            <span className="hidden sm:inline">Kept </span>
+            <span>{keptIds.length}/{totalArchivalCount}</span>
           </button>
 
-          {/* Index button with 44px min touch target & Magnetic physics */}
+          {/* Index Button */}
           <MagneticButton
             type="button"
             onClick={() => setIsIndexOpen(true)}
-            className={`min-h-[44px] min-w-[44px] px-5 py-2 font-mono uppercase text-xs tracking-widest border transition-all duration-200 cursor-pointer ${buttonBorder}`}
+            className={`min-h-[38px] sm:min-h-[44px] px-2.5 sm:px-4 py-1 sm:py-2 font-mono uppercase text-[10px] sm:text-xs tracking-widest border transition-all duration-200 cursor-pointer ${buttonBorder}`}
             aria-haspopup="dialog"
             aria-label="Open Archive Index directory"
           >
@@ -200,10 +216,15 @@ export const Header: React.FC<HeaderProps> = ({ activeGround, onNavigate }) => {
             top: `${flyingThumb.startY - 40}px`,
           }}
         >
-          <img src={flyingThumb.src} alt="" className="w-full h-full object-cover" />
+          <img
+            src={flyingThumb.src}
+            alt=""
+            className="w-full h-full object-cover"
+          />
         </div>
       )}
 
+      {/* Index Modal Overlay Dialog */}
       <IndexDialog
         isOpen={isIndexOpen}
         onClose={() => setIsIndexOpen(false)}

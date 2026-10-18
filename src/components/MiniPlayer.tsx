@@ -125,7 +125,7 @@ export const MiniPlayer: React.FC = () => {
       {/* Right: Volume & Error & Close */}
       <div className="flex items-center gap-3">
         {audioError ? (
-          <div className="flex items-center gap-1.5 text-xs text-[#E43D27] font-mono">
+          <div className="flex items-center gap-2 text-xs text-[#E43D27] font-mono">
             <span className="hidden sm:inline">{audioError}</span>
             <button
               type="button"
@@ -135,6 +135,16 @@ export const MiniPlayer: React.FC = () => {
               <RotateCcw size={12} />
               <span>Retry</span>
             </button>
+            {currentTrack.src && (
+              <a
+                href={currentTrack.src}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#F0E8D8] hover:text-[#E8F044] underline text-[11px] uppercase tracking-wider inline-flex items-center gap-0.5"
+              >
+                Open file ↗
+              </a>
+            )}
           </div>
         ) : (
           <div className="hidden sm:flex items-center gap-2">

@@ -1,15 +1,22 @@
-import React from 'react';
-import { siteConfig } from '../data/siteConfig';
+import React, { useState } from 'react';
+import { ARTIFACTS, ArchivalArtifact } from '../data/artifacts';
+import { ChevronDown, ChevronUp, ExternalLink } from 'lucide-react';
 
 export const Colophon: React.FC = () => {
+  const [isCreditsExpanded, setIsCreditsExpanded] = useState<boolean>(false);
+
+  const archivalArtifacts = ARTIFACTS.filter(
+    (a): a is ArchivalArtifact => a.kind === 'archival'
+  );
+
   return (
     <footer
       id="colophon"
       data-ground="ink"
       aria-label="Colophon and Credits"
-      className="relative w-full bg-[#11110F] text-[#F0E8D8] border-t border-[#262624] px-6 py-20 md:px-16"
+      className="relative w-full bg-[#11110F] text-[#F0E8D8] border-t border-[#262624] px-6 py-16 md:px-16"
     >
-      <div className="max-w-6xl mx-auto flex flex-col gap-16">
+      <div className="max-w-6xl mx-auto flex flex-col gap-12">
         {/* Top Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end border-b border-[#262624] pb-8 gap-4">
           <div>
@@ -21,116 +28,94 @@ export const Colophon: React.FC = () => {
             </h2>
           </div>
           <div className="font-mono text-xs text-[#8B8982] uppercase tracking-wider">
-            <span>CHALLENGE: </span>
-            <span className="text-[#E8F044] font-bold">ONE-TEN — DESIGN INDEPENDENTLY</span>
+            <span>A DIGITAL MUSEUM OF NIGERIAN CREATIVE HISTORY</span>
           </div>
         </div>
 
         {/* Institution Statement */}
         <div className="max-w-3xl">
           <p className="font-body-editorial text-xl md:text-2xl text-[#F0E8D8] leading-relaxed font-medium">
-            Archival images are credited to their institutions and used under the licences shown. Conceptual images are AI-generated studies, not historical records.
+            Archival records are credited to their holding institutions and reproduced under open cultural access licenses. Conceptual studies are designated as interpretive historical reconstructions.
           </p>
           <p className="font-body-editorial text-base md:text-lg text-[#8B8982] mt-4 leading-relaxed">
             Every artifact in this index has been curated as an art-directed fragment to examine how creative culture endures across media, materials, and generations.
           </p>
         </div>
 
-        {/* Technical & Design Specifications Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 pt-6 border-t border-[#222220]">
-          {/* Column 1: Designer Credit */}
-          <div>
-            <h3 className="font-mono text-xs uppercase tracking-widest text-[#E43D27] font-bold mb-3">
-              CREATIVE DIRECTION
-            </h3>
-            <p className="font-display-wide text-lg text-[#F0E8D8] font-bold">
-              {siteConfig.designerName}
-            </p>
-            <p className="font-mono text-xs text-[#8B8982] mt-1">
-              Curatorial & Editorial Systems
-            </p>
-          </div>
+        {/* Discreet Expandable Attributions & Licensing Panel */}
+        <div className="pt-2 border-t border-[#222220]">
+          <button
+            type="button"
+            onClick={() => setIsCreditsExpanded((prev) => !prev)}
+            aria-expanded={isCreditsExpanded}
+            className="w-full flex items-center justify-between py-4 text-left font-mono text-xs uppercase tracking-wider text-[#8B8982] hover:text-[#F0E8D8] transition-colors cursor-pointer group"
+          >
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-[#E43D27] inline-block" />
+              <span className="font-bold text-[#E4D9C0] group-hover:text-[#F0E8D8]">
+                Institutional Provenance & Image Attributions ({archivalArtifacts.length} Records)
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[#8B8982] group-hover:text-[#E8F044]">
+              <span>{isCreditsExpanded ? 'Hide Details' : 'View Credits'}</span>
+              {isCreditsExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+            </div>
+          </button>
 
-          {/* Column 2: Typography */}
-          <div>
-            <h3 className="font-mono text-xs uppercase tracking-widest text-[#E43D27] font-bold mb-3">
-              TYPOGRAPHY
-            </h3>
-            <ul className="space-y-1.5 font-mono text-xs text-[#E4D9C0] list-none p-0 m-0">
-              <li>
-                <strong className="text-[#F0E8D8]">Archivo:</strong> Condensed & Wide (800–900)
-              </li>
-              <li>
-                <strong className="text-[#F0E8D8]">Instrument Serif:</strong> Italic Whisper
-              </li>
-              <li>
-                <strong className="text-[#F0E8D8]">Hanken Grotesk:</strong> Editorial Body
-              </li>
-              <li>
-                <strong className="text-[#F0E8D8]">JetBrains Mono:</strong> Catalog Notation
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: Color Tokens */}
-          <div className="sm:col-span-2">
-            <h3 className="font-mono text-xs uppercase tracking-widest text-[#E43D27] font-bold mb-3">
-              CHROMATIC TOKENS
-            </h3>
-            <div className="grid grid-cols-3 gap-3">
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#11110F] border border-[#444] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Ink</div>
-                  <div className="text-[#8B8982]">#11110F</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#F0E8D8] border border-[#111] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Cream</div>
-                  <div className="text-[#8B8982]">#F0E8D8</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#E4D9C0] border border-[#111] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Paper-2</div>
-                  <div className="text-[#8B8982]">#E4D9C0</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#E43D27] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Vermilion</div>
-                  <div className="text-[#8B8982]">#E43D27</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#E8F044] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Yellow</div>
-                  <div className="text-[#8B8982]">#E8F044</div>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-[#8B8982] shrink-0" />
-                <div className="font-mono text-[11px] leading-tight">
-                  <div className="text-[#F0E8D8] font-bold">Grey</div>
-                  <div className="text-[#8B8982]">#8B8982</div>
-                </div>
+          {isCreditsExpanded && (
+            <div className="mt-4 pb-6 pt-2 border-t border-[#1e1e1c]">
+              <p className="font-mono text-[11px] text-[#8B8982] uppercase tracking-wider mb-6">
+                All historical photographic glass plates, musical instruments, and handwoven textiles are preserved in trust by partner collections:
+              </p>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {archivalArtifacts.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-3.5 bg-[#161614] border border-[#262624] flex flex-col justify-between gap-2"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-mono text-[11px] text-[#E8F044] font-bold uppercase tracking-wider">
+                          ACC. {item.id.toUpperCase()}
+                        </span>
+                        <span className="font-mono text-[10px] text-[#8B8982] uppercase">
+                          {item.date}
+                        </span>
+                      </div>
+                      <h4 className="font-display-wide text-sm text-[#F0E8D8] font-bold mt-1 line-clamp-1">
+                        {item.title}
+                      </h4>
+                      <p className="font-mono text-[11px] text-[#8B8982] mt-1 line-clamp-2">
+                        {item.creditLine}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between pt-2 border-t border-[#222220] font-mono text-[10px]">
+                      <span className="text-[#E4D9C0]/75">{item.licence}</span>
+                      {item.sourceUrl && (
+                        <a
+                          href={item.sourceUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[#E8F044] hover:underline inline-flex items-center gap-1"
+                        >
+                          Source <ExternalLink size={10} />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Footer Meta */}
+        {/* Editorial Footer Meta */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-8 border-t border-[#222220] font-mono text-xs text-[#8B8982] gap-4">
           <div>
-            <span>© ARCHIVE — DIGITAL MUSEUM PROJECT</span>
+            <span>© ARCHIVE — DIGITAL MUSEUM OF NIGERIAN CREATIVE HISTORY</span>
           </div>
           <div>
-            <span>NATIVE SCROLLING — 100SVH VIEWPORTS — ZERO-PILL DISCIPLINE</span>
+            <span>LAGOS · PRESERVING WHAT SURVIVES</span>
           </div>
         </div>
       </div>
