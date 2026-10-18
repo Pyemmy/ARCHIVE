@@ -199,8 +199,8 @@ export const HeroSignal: React.FC<HeroSignalProps> = ({
         </div>
 
         {/* Projector Controls & Counter Overlay */}
-        <div className="absolute top-24 right-6 md:top-24 md:right-12 z-30 flex items-center gap-3 bg-[#11110F]/80 border border-[#333330] px-3 py-1.5 backdrop-blur-xs">
-          <span className="font-mono text-xs text-[#E8F044] font-bold tracking-widest">
+        <div className="absolute top-20 right-3 sm:top-20 sm:right-6 md:top-24 md:right-12 z-30 flex items-center gap-2 sm:gap-3 bg-[#11110F]/85 border border-[#333330] px-2.5 py-1 sm:px-3 sm:py-1.5 backdrop-blur-xs">
+          <span className="font-mono text-[10px] sm:text-xs text-[#E8F044] font-bold tracking-widest whitespace-nowrap">
             PROJECTOR {PROJECTOR_SLIDES[activeSlide].num}
           </span>
           <button
@@ -208,9 +208,9 @@ export const HeroSignal: React.FC<HeroSignalProps> = ({
             onClick={toggleProjector}
             aria-label={isProjectorPlaying ? 'Pause hero projector rotation' : 'Play hero projector rotation'}
             aria-pressed={isProjectorPlaying}
-            className="min-h-[44px] min-w-[44px] px-2 text-[#F0E8D8] hover:text-[#E8F044] transition-colors cursor-pointer flex items-center justify-center font-mono text-xs uppercase"
+            className="min-h-[36px] min-w-[36px] sm:min-h-[44px] sm:min-w-[44px] p-1 sm:px-2 text-[#F0E8D8] hover:text-[#E8F044] transition-colors cursor-pointer flex items-center justify-center font-mono text-[10px] sm:text-xs uppercase"
           >
-            {isProjectorPlaying ? <Pause size={14} /> : <Play size={14} />}
+            {isProjectorPlaying ? <Pause size={12} className="sm:w-3.5 sm:h-3.5" /> : <Play size={12} className="sm:w-3.5 sm:h-3.5" />}
           </button>
         </div>
 
@@ -226,20 +226,21 @@ export const HeroSignal: React.FC<HeroSignalProps> = ({
 
       {/* DESCRIPTOR */}
       <div
-        className="absolute top-20 left-6 md:top-24 md:left-12 z-20 max-w-xl transition-all duration-700"
+        className="absolute top-20 left-3 sm:top-20 sm:left-6 md:top-24 md:left-12 z-20 max-w-[calc(100vw-165px)] sm:max-w-sm md:max-w-xl transition-all duration-700"
         style={{
           opacity: animStage >= 4 ? 1 : 0,
           transform: animStage >= 4 ? 'translateY(0)' : 'translateY(12px)',
         }}
       >
-        <p className="font-mono text-[12px] md:text-[13px] tracking-wider text-[#F0E8D8] uppercase leading-tight">
-          A DIGITAL MUSEUM OF NIGERIAN CREATIVE HISTORY — PHOTOGRAPHY — MUSIC — FASHION — DESIGN
+        <p className="font-mono text-[10px] sm:text-[11px] md:text-[13px] tracking-wider text-[#F0E8D8] uppercase leading-tight">
+          A DIGITAL MUSEUM OF NIGERIAN CREATIVE HISTORY
+          <span className="hidden sm:inline"> — PHOTOGRAPHY — MUSIC — FASHION — DESIGN</span>
         </p>
       </div>
 
       {/* LAYER 2: Whisper + Massive Headline + Subline with MASK-RISE */}
       <div
-        className="absolute top-36 left-6 md:top-40 md:left-12 z-20 flex flex-col pointer-events-none max-w-[90vw]"
+        className="absolute top-36 sm:top-36 md:top-40 left-3 sm:left-6 md:left-12 z-20 flex flex-col pointer-events-none max-w-[92vw] md:max-w-[90vw]"
         style={{
           transform: `translate3d(0, ${scrollOffsets.headline}px, 0)`,
         }}
